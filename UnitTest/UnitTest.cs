@@ -80,5 +80,18 @@ namespace UnitTest
                 }
             }
         }
+
+        [TestMethod]
+        public void TestWrite()
+        {
+            using (var writer = new CsvWriter(Console.Out))
+            {
+                writer.Write("abc");
+                writer.WriteLine("cde");
+                writer.WriteLine();
+                writer.WriteLine("efg", "ghi");
+                writer.WriteLine();
+            }
+        }
     }
 }

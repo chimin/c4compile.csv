@@ -55,6 +55,17 @@ namespace C4Compile.Csv
             }
         }
 
+        public void Write(params object[] items)
+        {
+            Write((IEnumerable<object>)items);
+        }
+
+        public void Write(IEnumerable<object> items)
+        {
+            foreach (var item in items)
+                Write(item);
+        }
+
         public void WriteLine()
         {
             writer.WriteLine();
@@ -63,7 +74,7 @@ namespace C4Compile.Csv
 
         public void WriteLine(params object[] items)
         {
-            WriteLine(items);
+            WriteLine((IEnumerable<object>)items);
         }
 
         public void WriteLine(IEnumerable<object> items)
@@ -105,7 +116,7 @@ namespace C4Compile.Csv
 
         public void Dispose()
         {
-            throw new NotImplementedException();
+            writer.Dispose();
         }
     }
 }

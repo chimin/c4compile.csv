@@ -1,0 +1,13 @@
+<?xml version="1.0"?>
+<package >
+  <metadata>
+    <id>C4Compile.Csv</id>
+    <version>1.0.3</version>
+    <authors>C4Compile</authors>
+    <owners>C4Compile</owners>
+    <projectUrl>https://github.com/chimin/c4compile.csv</projectUrl>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>A very simple CSV library</description>
+    <copyright>Copyright 2018 C4Compile</copyright>
+  </metadata>
+</package>
