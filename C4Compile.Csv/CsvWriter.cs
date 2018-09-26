@@ -67,12 +67,6 @@ namespace C4Compile.Csv
             Write((IEnumerable<object>)items);
         }
 
-        public void Write(IEnumerable<object> items)
-        {
-            foreach (var item in items)
-                Write(item);
-        }
-
         public void WriteLine()
         {
             writer.WriteLine();
@@ -84,30 +78,35 @@ namespace C4Compile.Csv
             WriteLine((IEnumerable<object>)items);
         }
 
-        public void WriteLine(IEnumerable<object> items)
+        public void WriteItems<T>(IEnumerable<T> items, bool endOfLine = true)
         {
             foreach (var item in items)
-            {
                 Write(item);
-            }
-            WriteLine();
+            if (endOfLine)
+                WriteLine();
         }
 
-        public void WriteDictionary(IDictionary<string, object> dict)
+        public void WriteDictionary(IDictionary<string, object> dict, bool endOfLine = true, IEnumerable<string> headers = null)
         {
-            if (Headers == null)
-                throw new InvalidOperationException("Must set Headers before WriteDictionary");
+            if (headers == null)
+                headers = Headers;
 
-            WriteLine(Headers.Select(i => dict.TryGetValue(i, out var item) ? item : null));
+            if (headers == null)
+                throw new InvalidOperationException("Must set headers before WriteDictionary");
+
+            WriteItems(headers.Select(i => dict.TryGetValue(i, out var item) ? item : null), endOfLine);
         }
 
-        public void WriteObject(object obj)
+        public void WriteObject(object obj, bool endOfLine = true, IEnumerable<string> headers = null)
         {
-            if (Headers == null)
-                throw new InvalidOperationException("Must set Headers before WriteObject");
+            if (headers == null)
+                headers = Headers;
+
+            if (headers == null)
+                throw new InvalidOperationException("Must set headers before WriteDictionary");
 
             var type = obj.GetType();
-            WriteLine(Headers.Select(i =>
+            WriteItems(headers.Select(i =>
             {
                 var property = type.GetProperty(i);
                 if (property != null)
@@ -118,7 +117,7 @@ namespace C4Compile.Csv
                     return FormatValue(i, field.GetValue(obj), field.FieldType);
 
                 return null;
-            }));
+            }), endOfLine);
         }
 
         public override string ToString()

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using C4Compile.Csv;
@@ -91,6 +92,44 @@ namespace UnitTest
                 writer.WriteLine();
                 writer.WriteLine("efg", "ghi");
                 writer.WriteLine();
+            }
+        }
+
+        [TestMethod]
+        public void TestWriteDictionary()
+        {
+            using (var writer = new CsvWriter(Console.Out))
+            {
+                writer.Headers = new[] { "abc", "cde" };
+                writer.WriteDictionary(new Dictionary<string, object>
+                {
+                    ["abc"] = "",
+                    ["cde"] = "",
+                });
+                writer.WriteDictionary(new Dictionary<string, object>
+                {
+                    ["abc"] = "efg",
+                    ["cde"] = "ghi",
+                });
+            }
+        }
+
+        [TestMethod]
+        public void TestWriteObject()
+        {
+            using (var writer = new CsvWriter(Console.Out))
+            {
+                writer.Headers = new[] { "abc", "cde" };
+                writer.WriteObject(new
+                {
+                    abc = "",
+                    cde = "",
+                });
+                writer.WriteObject(new
+                {
+                    abc = "efg",
+                    cde = "ghi",
+                });
             }
         }
     }
