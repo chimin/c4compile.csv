@@ -15,9 +15,9 @@ namespace C4Compile.Csv
         private char separator;
         private char quote;
 
-        public CsvWriter(TextWriter writer, char separator = ',', char quote = '"')
+        public CsvWriter(TextWriter writer = null, char separator = ',', char quote = '"')
         {
-            this.writer = writer;
+            this.writer = writer ?? new StringWriter();
             this.separator = separator;
             this.quote = quote;
         }
@@ -112,6 +112,11 @@ namespace C4Compile.Csv
 
                 return null;
             }));
+        }
+
+        public override string ToString()
+        {
+            return writer.ToString();
         }
 
         public void Dispose()
