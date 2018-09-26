@@ -11,7 +11,8 @@ namespace C4Compile.Csv
         public bool EndOfLine { get; private set; }
         public bool EndOfInput { get; private set; }
         public IList<string> Headers { get; set; }
-        public Func<string, Type, object> Converter { get; set; } = Convert.ChangeType;
+
+        public Func<string, string, Type, object> ValueParser { get; set; } = ParseValue;
 
         private StringBuilder sb = new StringBuilder();
         private TextReader reader;
@@ -23,6 +24,11 @@ namespace C4Compile.Csv
             this.reader = reader;
             this.separator = separator;
             this.quote = quote;
+        }
+
+        public static object ParseValue(string name, string value, Type toType)
+        {
+            return Convert.ChangeType(value, toType);
         }
 
         public string Read()
@@ -172,7 +178,7 @@ namespace C4Compile.Csv
                 var property = type.GetProperty(header);
                 if (property != null)
                 {
-                    var value = Converter(item, property.PropertyType);
+                    var value = ValueParser(header, item, property.PropertyType);
                     property.SetValue(t, value, null);
                 }
                 else
@@ -180,7 +186,7 @@ namespace C4Compile.Csv
                     var field = type.GetField(header);
                     if (field != null)
                     {
-                        var value = Converter(item, field.FieldType);
+                        var value = ValueParser(header, item, field.FieldType);
                         field.SetValue(t, value);
                     }
                 }

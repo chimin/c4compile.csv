@@ -11,6 +11,8 @@ namespace C4Compile.Csv
         public bool LineHasItem { get; set; }
         public IList<string> Headers { get; set; }
 
+        public Func<string, object, Type, string> ValueFormatter { get; set; } = FormatValue;
+
         private TextWriter writer;
         private char separator;
         private char quote;
@@ -20,6 +22,11 @@ namespace C4Compile.Csv
             this.writer = writer ?? new StringWriter();
             this.separator = separator;
             this.quote = quote;
+        }
+
+        public static string FormatValue(string name, object value, Type fromType)
+        {
+            return value?.ToString();
         }
 
         public void Write(object item)
@@ -104,11 +111,11 @@ namespace C4Compile.Csv
             {
                 var property = type.GetProperty(i);
                 if (property != null)
-                    return property.GetValue(obj, null);
+                    return FormatValue(i, property.GetValue(obj, null), property.PropertyType);
 
                 var field = type.GetField(i);
                 if (field != null)
-                    return field.GetValue(obj);
+                    return FormatValue(i, field.GetValue(obj), field.FieldType);
 
                 return null;
             }));
