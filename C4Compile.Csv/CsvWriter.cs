@@ -64,7 +64,7 @@ namespace C4Compile.Csv
 
         public void Write(params object[] items)
         {
-            Write((IEnumerable<object>)items);
+            WriteItems(items, false);
         }
 
         public void WriteLine()
@@ -75,7 +75,7 @@ namespace C4Compile.Csv
 
         public void WriteLine(params object[] items)
         {
-            WriteLine((IEnumerable<object>)items);
+            WriteItems(items, true);
         }
 
         public void WriteItems<T>(IEnumerable<T> items, bool endOfLine = true)
