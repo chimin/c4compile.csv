@@ -2,7 +2,7 @@
 <package >
   <metadata>
     <id>C4Compile.Csv</id>
-    <version>1.0.3</version>
+    <version>1.0.11</version>
     <authors>C4Compile</authors>
     <owners>C4Compile</owners>
     <projectUrl>https://github.com/chimin/c4compile.csv</projectUrl>
