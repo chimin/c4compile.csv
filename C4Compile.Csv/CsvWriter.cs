@@ -37,7 +37,7 @@ namespace C4Compile.Csv
             LineHasItem = true;
 
             var str = item?.ToString() ?? "";
-            var quoted = str?.Intersect(new[] { separator, quote }).Any() ?? false;
+            var quoted = str?.Intersect(new[] { separator, quote, '\r', '\n' }).Any() ?? false;
             if (quoted)
             {
                 writer.Write(quote);
